@@ -1,6 +1,6 @@
 ---
 name: bmad-guess-story
-description: 'Reverse engineer. Use when the user call it, this skill aims to build story made of Acceptance Criteria, Tasks and list of modified files. It should followed up with the skill /bmad-create-story.'
+description: "Reconstructs a BMAD-compatible user story from an existing Git diff."
 ---
 
 ## Overview
