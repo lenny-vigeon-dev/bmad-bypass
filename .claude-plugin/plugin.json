@@ -1,0 +1,10 @@
+{
+    "name": "bmad-bypass",
+    "version": "1.0.0",
+    "description": "Complementary skills for bmad skillset to bypass some step of the normal flow.",
+    "author": {
+        "name": "Linnchoeuh",
+        "url": "https://github.com/lenny-vigeon-dev"
+    },
+    "license": "MIT"
+}
