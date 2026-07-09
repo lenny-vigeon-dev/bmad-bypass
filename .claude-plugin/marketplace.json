@@ -1,0 +1,13 @@
+{
+    "name": "bmad-bypass-marketplace",
+    "owner": {
+        "name": "lenny-vigeon-dev"
+    },
+    "plugins": [
+        {
+            "name": "bmad-bypass",
+            "source": "./",
+            "description": "Complementary skills for bmad skillset to bypass some step of the normal flow."
+        }
+    ]
+}
