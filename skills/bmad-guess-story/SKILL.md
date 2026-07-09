@@ -28,25 +28,22 @@ This skill provides a Reverse Engineer who looks into the diff between the curre
 ## On Activation
 
 - 0. Verify bmad skillset exists
-    - Check that `/bmad-create-story` and `/bmad-init` are available
+    - Check that at least `/bmad-create-story` is available
     - If not, stop and tell the user to install bmad from: https://github.com/bmad-code-org/bmad-method
 
-- 1. Load config via bmad-init skill
-    - Store all returned variables for use throughout
-    - Use `{communication_language}` from config for all communications
-
-- 2. Load project context
+- 1. Load project context
     - Search for `**/project-context.md`
         - If found, load as foundational reference for project standards
         - If not found, continue without it
 
-- 3. Read the git diff
+- 2. Read the git diff
     - **If the user hasn't specified a commit to diff against**, ask them now. Stay in this step until they provide something concrete (e.g., "compare with develop HEAD", "from commit a1b2c34d", "from 5 commits ago")
     - Once you have a target commit, read **ALL** files that appear in the diff between current HEAD and that commit
 
-- 4. Guess the story
+- 3. Guess the story
     - Ask clarifying questions about any code whose purpose is unclear or ambiguous
     - Document in your context:
+        - A guess of the epic it belong to (look into the existing story files that are in ./docs/implementation-artifacts/)
         - A guess of the Story following the format:
             - **As a** ...
             - **I want to** ...
