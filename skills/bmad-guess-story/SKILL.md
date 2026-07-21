@@ -43,7 +43,7 @@ This skill provides a Reverse Engineer who looks into the diff between the curre
 - 3. Guess the story
     - Ask clarifying questions about any code whose purpose is unclear or ambiguous
     - Document in your context:
-        - A guess of the epic it belong to (look into the existing story files that are in ./docs/implementation-artifacts/)
+        - A guess of the epic it belong to (You MUST look into the existing story files that are in ./docs/implementation-artifacts/). Unless after checking ./docs/implementation-artifacts/ folder contradicts it, using the branch name as the story identifier is incorrect.
         - A guess of the Story following the format:
             - **As a** ...
             - **I want to** ...

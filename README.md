@@ -9,6 +9,24 @@ This repo aims to progressively provide a set of skills to work without [bmad-me
 
 The main goal of these skills is not to go against bmad but to offer an alternative approach that is bmad compatible, letting you work along bmad power users while not being forced to use bmad yourself.
 
+# Install
+
+## Claude Code
+Start claude:
+```bash
+claude
+```
+
+Add the skills marketplace:
+```bash
+/plugin marketplace add lenny-vigeon-dev/bmad-bypass
+```
+
+Install bmad-bypass:
+```bash
+/plugin install bmad-bypass@lenny-vigeon-dev
+```
+
 # Skills
 
 ## bmad-guess-story
