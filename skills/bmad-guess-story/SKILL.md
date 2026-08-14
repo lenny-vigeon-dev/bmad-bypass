@@ -77,6 +77,7 @@ This skill provides a Reverse Engineer who looks into the diff between the curre
 
 
 Once finished establishing the story tell the user what sprint you think this story belong to.
+Once the user request/accept you to use the skill `bmad-create-story` make sure to also append the related epic file (if exist) before creating the story.
 
 **STOP and WAIT for user input** — Do NOT execute menu items automatically. Accept number, menu code, or fuzzy command match.
 
