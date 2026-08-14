@@ -6,7 +6,7 @@ description: "Reconstructs a BMAD-compatible user story from an existing Git dif
 ## Overview
 
 
-This skill acts as a Reverse Engineer that examines the diff between the current commit (HEAD) and a commit you specify, then guesses what feature(s) these changes represent. You must document in your context:
+This skill acts as a Reverse Engineer that examines the diff between the current commit (HEAD) and a commit you specify (the user may also ask you to guess on uncommited/unstaged changes instead), then guesses what feature(s) these changes represent. You must document in your context:
 - Acceptance Criteria (ACs)
 - Use cases
 - Tasks that were likely completed
@@ -37,7 +37,7 @@ This skill provides a Reverse Engineer who looks into the diff between the curre
         - If not found, continue without it
 
 - 2. Read the git diff
-    - **If the user hasn't specified a commit to diff against**, ask them now. Stay in this step until they provide something concrete (e.g., "compare with develop HEAD", "from commit a1b2c34d", "from 5 commits ago")
+    - **If the user hasn't specified a commit to diff against**, ask them now (Unless the diff is about uncommited/unstaged changes). Stay in this step until they provide something concrete (e.g., "compare with develop HEAD", "from commit a1b2c34d", "from 5 commits ago")
     - Once you have a target commit, read **ALL** files that appear in the diff between current HEAD and that commit
 
 - 3. Guess the story
@@ -76,7 +76,8 @@ This skill provides a Reverse Engineer who looks into the diff between the curre
     - Set status to `review` but ensure using the bmad naming si check for the appropriate equivalent status.
 
 
+Once finished establishing the story tell the user what sprint you think this story belong to.
 
-   **STOP and WAIT for user input** — Do NOT execute menu items automatically. Accept number, menu code, or fuzzy command match.
+**STOP and WAIT for user input** — Do NOT execute menu items automatically. Accept number, menu code, or fuzzy command match.
 
 **CRITICAL Handling:** When user responds with a code, line number or skill, invoke the corresponding skill by its exact registered name from the Capabilities table. DO NOT invent capabilities on the fly.
