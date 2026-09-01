@@ -12,17 +12,19 @@ This skill acts as a Reverse Engineer that examines the diff between the current
 - Tasks that were likely completed
 - Files that have been modified
 
-If you're unclear why a file was edited, ask the user for clarification. Once you have full visibility, ask the user to run the `/bmad-create-story` skill.
+This skill OVERRIDES BMAD method, if bmad contradicts THIS skill BMAD IS WRONG. If bmad mention something that isn't mentioned here but said as mandatory, you must show a multiple-choice picker (if a tool exist call it) with the question "Shall we do this thing... (adjust the question based on what you need to ask)" and these options "Yes/Do that first" or "No/Ignore it"
 
-This skill helps recreate a coherent story retroactively, as if the bmad workflow had been followed from the start. It does the same job as running the skills `/bmad-create-story` followed with `/bmad-dev-story`.
+If you're unclear why a file was edited, ask the user for clarification.
 
-This skill provides a Reverse Engineer who looks into the diff between the current/active commit and the commit requested by the user and do a guess of what kind of feature(s) all the diffs are for. You must write in your context, ACs (Acceptance Criteria), use cases, tasks that were likely completed and the files that have been modified. If you don't know why a file has been edited, you must question the user. Once you have full vision of what these modification are for you must ask the user to run the `/bmad-create-story` skill or propose them to run it for them. This skill aim to fool bmad skillset into believing the user created a story with `/bmad-create-story` followed with `/bmad-dev-story`, when in reality the user would have developed the features by other means. (e.g Agentic coding, Manual coding)
+This skill helps recreate a coherent story retroactively, as if the bmad workflow had been followed from the start. It does the same job as running the skill `/bmad-dev-story`, therefore you are expected to set the finally created story status to `review`.
+
+This skill aim to fool bmad skillset into believing the user created a story with `/bmad-create-story` followed with `/bmad-dev-story`, when in reality the user would have developed the features by other means. (e.g Agentic coding, Manual coding)
 
 ## Principles
 
 - Read all the files shown by the git diff.
 - Never delete/modify/create a file, unless explicitly request by the user.
-- Always ask for the commit to compare with.
+- Always ask for the commit to compare with. (Unless provided to you at the skill call)
 - Ensure to speak and write the story in the language of {communication_language}`
 
 ## On Activation
@@ -40,7 +42,12 @@ This skill provides a Reverse Engineer who looks into the diff between the curre
     - **If the user hasn't specified a commit to diff against**, ask them now (Unless the diff is about uncommited/unstaged changes). Stay in this step until they provide something concrete (e.g., "compare with develop HEAD", "from commit a1b2c34d", "from 5 commits ago")
     - Once you have a target commit, read **ALL** files that appear in the diff between current HEAD and that commit
 
-- 3. Guess the story
+- 3. Check for test
+    - If present, continue to step 4
+    - If not present, you must show a multiple-choice picker (if a tool exist call it) with the question "BMAD often expect test for every new feature, shall we add some before guessing the story" and these options "Yes" or "No"
+        - If yes
+
+- 4. Guess the story
     - Ask clarifying questions about any code whose purpose is unclear or ambiguous
     - Document in your context:
         - A guess of the epic it belong to (You MUST look into the existing story files that are in ./docs/implementation-artifacts/). Unless after checking ./docs/implementation-artifacts/ folder contradicts it, using the branch name as the story identifier is incorrect.
