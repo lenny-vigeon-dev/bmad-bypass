@@ -3,8 +3,13 @@ name: bmad-guess-story
 description: "Reconstructs a BMAD-compatible user story from an existing Git diff."
 ---
 
-## Overview
+## META Instruction
+### Multiple-choice picker
+If I write something like 
 
+### This skill over BMAD
+
+## Overview
 
 This skill acts as a Reverse Engineer that examines the diff between the current commit (HEAD) and a commit you specify (the user may also ask you to guess on uncommited/unstaged changes instead), then guesses what feature(s) these changes represent. You must document in your context:
 - Acceptance Criteria (ACs)
@@ -14,7 +19,7 @@ This skill acts as a Reverse Engineer that examines the diff between the current
 
 This skill OVERRIDES BMAD method, if bmad contradicts THIS skill BMAD IS WRONG. If bmad mention something that isn't mentioned here but said as mandatory, you must show a multiple-choice picker (if a tool exist call it) with the question "Shall we do this thing... (adjust the question based on what you need to ask)" and these options "Yes/Do that first" or "No/Ignore it"
 
-If you're unclear why a file was edited, ask the user for clarification.
+If you're unclear why a file was edited, why something was implemented, present in a file, ask the user for clarification.
 
 This skill helps recreate a coherent story retroactively, as if the bmad workflow had been followed from the start. It does the same job as running the skill `/bmad-dev-story`, therefore you are expected to set the finally created story status to `review`.
 
