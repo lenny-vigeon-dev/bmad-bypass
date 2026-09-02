@@ -1,15 +1,9 @@
 ---
-name: bmad-guess-story
-description: "Reconstructs a BMAD-compatible user story from an existing Git diff."
+name: bbps-guess-tests
+description: "Find tests to implement based on a Git diff."
 ---
 
-## META Instruction
-### Multiple-choice picker
-If I write something like 
-
-### This skill over BMAD
-
-## Overview
+# Overview
 
 This skill acts as a Reverse Engineer that examines the diff between the current commit (HEAD) and a commit you specify (the user may also ask you to guess on uncommited/unstaged changes instead), then guesses what feature(s) these changes represent. You must document in your context:
 - Acceptance Criteria (ACs)
@@ -17,11 +11,11 @@ This skill acts as a Reverse Engineer that examines the diff between the current
 - Tasks that were likely completed
 - Files that have been modified
 
-This skill OVERRIDES BMAD method, if bmad contradicts THIS skill BMAD IS WRONG. If bmad mention something that isn't mentioned here but said as mandatory, you must show a multiple-choice picker (if a tool exist call it) with the question "Shall we do this thing... (adjust the question based on what you need to ask)" and these options "Yes/Do that first" or "No/Ignore it"
+If bmad mention something that isn't mentioned here but said as mandatory, you must `show a multiple-choice picker` with the question "Shall we do this thing... (adjust the question based on what you need to ask)" and these options "Yes/Do that first" or "No/Ignore it"
 
 If you're unclear why a file was edited, why something was implemented, present in a file, ask the user for clarification.
 
-This skill helps recreate a coherent story retroactively, as if the bmad workflow had been followed from the start. It does the same job as running the skill `/bmad-dev-story`, therefore you are expected to set the finally created story status to `review`.
+This skill helps recreate a coherent story retroactively, as if the bmad workflow had been followed from the start. The code written in the diff is assumed to be the result of running `/bmad-dev-story`, therefore you are expected to set the finally created story status to `review`.
 
 This skill aim to fool bmad skillset into believing the user created a story with `/bmad-create-story` followed with `/bmad-dev-story`, when in reality the user would have developed the features by other means. (e.g Agentic coding, Manual coding)
 
@@ -44,12 +38,13 @@ This skill aim to fool bmad skillset into believing the user created a story wit
         - If not found, continue without it
 
 - 2. Read the git diff
-    - **If the user hasn't specified a commit to diff against**, ask them now (Unless the diff is about uncommited/unstaged changes). Stay in this step until they provide something concrete (e.g., "compare with develop HEAD", "from commit a1b2c34d", "from 5 commits ago")
+    - **If the user hasn't specified a commit to diff against**, ask them now (Unless the diff is about uncommited/unstaged changes). You must `show a multiple-choice picker` with the question "What is the diff comparison point?" "Unstaged/Uncommitted files" "dev/develop bra,ch" "main/master branch" "Default branch" "Something else"
+    Stay in this step until they provide something concrete (e.g., "compare with develop HEAD", "from commit a1b2c34d", "from 5 commits ago")
     - Once you have a target commit, read **ALL** files that appear in the diff between current HEAD and that commit
 
 - 3. Check for test
     - If present, continue to step 4
-    - If not present, you must show a multiple-choice picker (if a tool exist call it) with the question "BMAD often expect test for every new feature, shall we add some before guessing the story" and these options "Yes" or "No"
+    - If not present, you must `show a multiple-choice picker` with the question "BMAD often expect test for every new feature, shall we add some tests before guessing the story?" "Yes" "No"
         - If yes
 
 - 4. Guess the story
