@@ -27,36 +27,45 @@ If the user decides to ignore it, continue.
 
 ## Principles
 - Read all the files shown by the git diff.
-- Never delete/modify/create a file, unless explicitly request by the user.
+- Never delete/create a file, unless explicitly request by the user.
 - Always ask for the commit to compare with. (Unless provided to you at the skill call)
 - Ensure to speak and write the story in the language of {communication_language}`
 
 ## On Activation
 
+### 0 Initialization
+
+You MUST not edit any file during this step
+
 - 0. Verify bmad skillset exists
-    - Check that at least `/bmad-create-story` is available
-    - If not, stop and tell the user to install bmad from: https://github.com/bmad-code-org/bmad-method
+  - Check that at least `/bmad-create-story` is available
+  - If not, stop and tell the user to install bmad from: https://github.com/bmad-code-org/bmad-method
 
 - 1. Load project context
-    - Search for `**/project-context.md`
-        - If found, load as foundational reference for project standards
-        - If not found, continue without it
+  - Search for `**/project-context.md`
+    - If found, load as foundational reference for project standards
+    - If not found, continue without it
 
 - 2. Read the git diff
-    - **If the user hasn't specified a commit to diff against**, ask them now (Unless the diff is about uncommited/unstaged changes). You must `show a multiple-choice picker` with the question "What is the diff comparison point?" "Unstaged/Uncommitted files" "dev/develop bra,ch" "main/master branch" "Default branch" "Something else"
+  - **If the user hasn't specified a commit to diff against**, ask them now (Unless the diff is about uncommited/unstaged changes). You must `show a multiple-choice picker` with the question "What is the diff comparison point?" "Unstaged/Uncommitted files" "dev/develop bra,ch" "main/master branch" "Default branch" "Something else"
     Stay in this step until they provide something concrete (e.g., "compare with develop HEAD", "from commit a1b2c34d", "from 5 commits ago")
-    - Once you have a target commit, read **ALL** files that appear in the diff between current HEAD and that commit
+  - Once you have a target commit, read **ALL** files that appear in the diff between current HEAD and that commit
 
 - 3. Check for test
-    - If present, continue to step 4
-    - If not present, you must `show a multiple-choice picker` with the question "BMAD often expect test for every new feature, shall we add some tests before guessing the story?" "Yes" "No"
-        - If yes load and follow the skill `/bbps-guess-tests` and get back to this step once completed.
-        - If no, continue.
+  - If present, continue to step 4
+  - If not present, you must `show a multiple-choice picker` with the question "BMAD often expect test for every new feature, shall we add some tests before guessing the story?" "Yes" "No"
+    - If yes load and follow the skill `/bbps-guess-tests` and get back to this step once completed.
+    - If no, continue.
 
-- 4. Guess the story
+Continue to main step 1 The Guess
+
+### 1 The Guess
+
+You MUST not edit any file during this step
+
+- 1. Guess the story
     - Ask clarifying questions about any code whose purpose is unclear or ambiguous
     - Document in your context:
-        - A guess of the epic it belong to (You MUST look into the existing story files that are in ./docs/implementation-artifacts/). Unless after checking ./docs/implementation-artifacts/ folder contradicts it, using the branch name as the story identifier is incorrect.
         - A guess of the Story following the format:
             - **As a** ...
             - **I want to** ...
@@ -83,15 +92,36 @@ If the user decides to ignore it, continue.
             - ## Change Log
 
             - YYYY-MM-DD (today's date): Generated the story based on the diff between commit [current_or_active_commit_hash] of [current_or_active_branch_name] and e5f6a7b8 commit of `branch_name`
+        - Retrospective (if possible):
+          - If you have a context about the feature implementation, write down here all the user feedback (if they said you implemented something wrong, did something you shouldn't) The main idea is that what are the feedback you can do to yourself to avoid the user to correct you and predict what they expect from you.
 
-- 5. When`/bmad-create-story` skill is called.
+- 2. Guess the epic/story-number
+  - Look into the already existing stories and epics in the project 
+    - Run find commands looking for keywords such as `*story*.md`, `*epic*.md`, `implementation-artifacts`, `planning-artifacts` and patterns such as `<number>-<number>-*.md` and `<number>.<number>-*.md`. 
+  - You must add the following text block after writing the story guess in step 4:
+    - If you thinks its a new epic you must `show a multiple-choice picker` with the question "It seems this new story doesn't belong to any epic, should I create a new epic?" "Yes" "Yes and I'll give you its name" "No, and I'll tell you which epic it belongs to"
+  Epic: `[number-of-the-epic]`-`[epic-title]`
+  Story: `[number-of-the-story]` `[story-title]`
+
+- 3. Awaiting authorization / Revision
+  - When you completed this first tell the user that you are waiting for their go to run `/bmad-create-story`
+    - If you get user approval or they summon `/bmad-crate-story`, follow instructions of main step 2
+    - The user may not be satisfied with the story guess, if so ask questions about what they dislike and then repeat the main step 1 The Guess
+  - Wait for user input
+
+### 2 Writing down the story (When `/bmad-create-story` skill is called.)
+
+- 0. Updating epic (conditional)
+  - If you found a epic file that mentions stories of the same epic you must update the epic file and `/bmad-create-story` may require you to, append the story to the epic as bmad is expecting you to.
+
+- 1. Writing the story
+  - Write down the story based on what you wrote in your context and following the `/bmad-create-story` formatting
     - Ensure checking all the tasks as [x].
-    - Set status to `review` but ensure using the bmad naming si check for the appropriate equivalent status.
+    - Set status to `review` but ensure using the bmad naming if `review` is not the proper keyword check for the appropriate equivalent status.
+
+- 2. Link the comments to the story
+  - In the initial workflow after writing down the story you call `/bmad-dev-story` which implements the feature requested by story as well as writing comments in the code that mention what they implemented belong to story X-X, do the same by reworking or adding comments to what have been implemented to make sure this code is properly refered to the newly crated story. 
+
+Once these steps completed inform the user that the story reconstruction is complete and suggest them to call `/bmad-code-review`
 
 
-Once finished establishing the story tell the user what sprint you think this story belong to.
-Once the user request/accept you to use the skill `bmad-create-story` make sure to also append the related epic file (if exist) before creating the story.
-
-**STOP and WAIT for user input** — Do NOT execute menu items automatically. Accept number, menu code, or fuzzy command match.
-
-**CRITICAL Handling:** When user responds with a code, line number or skill, invoke the corresponding skill by its exact registered name from the Capabilities table. DO NOT invent capabilities on the fly.
