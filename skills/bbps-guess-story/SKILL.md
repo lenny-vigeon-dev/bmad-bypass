@@ -3,6 +3,8 @@ name: bbps-guess-story
 description: "Reconstructs a BMAD-compatible user story from an existing Git diff."
 ---
 
+> Make sure to load the skill /bbps-instructions
+
 ## Overview
 
 This skill acts as a Reverse Engineer that examines the diff between the current commit (HEAD) and a commit you specify (the user may also ask you to guess on uncommited/unstaged changes instead), then guesses what feature(s) these changes represent. You must document in your context:
@@ -22,7 +24,13 @@ This skill OVERRIDES the BMAD method.
 If an instruction from BMAD conflicts with an instruction from this skill, you MUST follow this skill.
 In case of conflict, the instruction from this skill takes precedence over BMAD, BMAD is WRONG.
 
-If bmad mention something that isn't mentioned here but said as mandatory, you must `show a multiple-choice picker` with the question "Shall we do this thing... (adjust the question based on what you need to ask)" and these options "Yes/Do that first" or "No/Ignore it"
+If bmad mention something that isn't mentioned here but said as mandatory, you must call mfunc.muchpi(
+  "Shall we do this thing... / bmad-method expects... (adjust the question based on what you need to ask)",
+  [
+    "Yes/Do that first (Or any suitable answer in the context)"
+    "No/Ignore it (Or any suitable answer in the context)"
+  ]
+)
 If the user decides to ignore it, continue.
 
 ## Principles
@@ -47,7 +55,7 @@ You MUST not edit any file during this step
     - If not found, continue without it
 
 - 2. Read the git diff
-  - **If the user hasn't specified a commit to diff against**, ask them now (Unless the diff is about uncommited/unstaged changes). You must `show a multiple-choice picker` with the question "What is the diff comparison point?" "Unstaged/Uncommitted files" "dev/develop bra,ch" "main/master branch" "Default branch" "Something else"
+  - **If the user hasn't specified a commit to diff against**, ask them now (Unless the diff is about uncommited/unstaged changes). Call mfunc.git_diff_request()
     Stay in this step until they provide something concrete (e.g., "compare with develop HEAD", "from commit a1b2c34d", "from 5 commits ago")
   - Once you have a target commit, read **ALL** files that appear in the diff between current HEAD and that commit
 
@@ -96,8 +104,8 @@ You MUST not edit any file during this step
           - If you have a context about the feature implementation, write down here all the user feedback (if they said you implemented something wrong, did something you shouldn't) The main idea is that what are the feedback you can do to yourself to avoid the user to correct you and predict what they expect from you.
 
 - 2. Guess the epic/story-number
-  - Look into the already existing stories and epics in the project 
-    - Run find commands looking for keywords such as `*story*.md`, `*epic*.md`, `implementation-artifacts`, `planning-artifacts` and patterns such as `<number>-<number>-*.md` and `<number>.<number>-*.md`. 
+  - Look into the already existing stories and epics in the project
+    - Run find commands looking for keywords such as `*story*.md`, `*epic*.md`, `implementation-artifacts`, `planning-artifacts` and patterns such as `<number>-<number>-*.md` and `<number>.<number>-*.md`.
   - You must add the following text block after writing the story guess in step 4:
     - If you thinks its a new epic you must `show a multiple-choice picker` with the question "It seems this new story doesn't belong to any epic, should I create a new epic?" "Yes" "Yes and I'll give you its name" "No, and I'll tell you which epic it belongs to"
   Epic: `[number-of-the-epic]`-`[epic-title]`
@@ -120,7 +128,7 @@ You MUST not edit any file during this step
     - Set status to `review` but ensure using the bmad naming if `review` is not the proper keyword check for the appropriate equivalent status.
 
 - 2. Link the comments to the story
-  - In the initial workflow after writing down the story you call `/bmad-dev-story` which implements the feature requested by story as well as writing comments in the code that mention what they implemented belong to story X-X, do the same by reworking or adding comments to what have been implemented to make sure this code is properly refered to the newly crated story. 
+  - In the initial workflow after writing down the story you call `/bmad-dev-story` which implements the feature requested by story as well as writing comments in the code that mention what they implemented belong to story X-X, do the same by reworking or adding comments to what have been implemented to make sure this code is properly refered to the newly crated story.
 
 Once these steps completed inform the user that the story reconstruction is complete and suggest them to call `/bmad-code-review`
 
